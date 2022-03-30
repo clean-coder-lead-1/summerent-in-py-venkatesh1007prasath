@@ -27,15 +27,8 @@ def classify_temperature_breach(cooling_type, temperature_in_celsius):
 
 def check_and_alert(alert_target, battery_char, temperature_in_celsius):
     breach_type = classify_temperature_breach(battery_char['cooling_type'], temperature_in_celsius)
-    if alert_target == 'TO_CONTROLLER':
-        send_to_controller(breach_type)
-    elif alert_target == 'TO_EMAIL':
-        if breach_type != 'NORMAL':
-            if controller_present:
-                send_to_controller(breach_type)
-            send_to_email(breach_type)   # Assumed to send email only on extreme temperatures
-        else:
-            print(breach_type)
+    alert_and_action = {'TO_CONTROLLER': send_to_controller, 'TO_EMAIL': send_to_email}
+    alert_and_action[alert_target](breach_type)
 
 
 def send_to_controller(breach_type):
@@ -46,5 +39,10 @@ def send_to_controller(breach_type):
 def send_to_email(breach_type):
     recipient = "a.b@c.com"
     temp_level = {"TOO_LOW": "too low", "TOO_HIGH": "too high"}
-    print('To: {}'.format(recipient))
-    print('Hi, the temperature is {}'.format(temp_level[breach_type]))
+    if breach_type != 'NORMAL':
+        if controller_present:
+            send_to_controller(breach_type)
+        print('To: {}'.format(recipient))
+        print('Hi, the temperature is {}'.format(temp_level[breach_type]))
+    else:
+        print(breach_type)
