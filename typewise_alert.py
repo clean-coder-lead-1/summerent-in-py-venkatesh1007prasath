@@ -5,12 +5,7 @@ controller_present = True
 
 
 def infer_breach(value, lower_limit, upper_limit):
-    if value < lower_limit:
-        return 'TOO_LOW'
-    elif value > upper_limit:
-        return 'TOO_HIGH'
-    else:
-        return 'NORMAL'
+    return 'TOO_LOW' if value < lower_limit else ('TOO_HIGH' if value > upper_limit else 'NORMAL')
 
 
 def classify_temperature_breach(cooling_type, temperature_in_celsius):
