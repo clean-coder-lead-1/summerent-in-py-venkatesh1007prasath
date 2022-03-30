@@ -35,112 +35,68 @@ class TypeWiseTest(unittest.TestCase):
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_send_to_email(self, mock_stdout):
         typewise_alert.send_to_email('TOO_LOW')
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too low'])
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too low'])    # low expected
         typewise_alert.send_to_email('TOO_HIGH')
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too high'])
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too high'])
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_check_and_alert(self, mock_stdout):
         # ========================= PASSIVE_COOLING======================================
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "PASSIVE_COOLING"},
-                                       temperature_in_celsius=25)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "PASSIVE_COOLING"}, 25)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, NORMAL")
 
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "PASSIVE_COOLING"},
-                                       temperature_in_celsius=-5)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "PASSIVE_COOLING"}, -5)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, TOO_LOW")
 
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "PASSIVE_COOLING"},
-                                       temperature_in_celsius=50)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "PASSIVE_COOLING"}, 50)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, TOO_HIGH")
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "PASSIVE_COOLING"},
-                                       temperature_in_celsius=25)
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "PASSIVE_COOLING"}, 25)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "NORMAL")
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "PASSIVE_COOLING"},
-                                       temperature_in_celsius=-5)
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too low'])
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "PASSIVE_COOLING"}, -5)
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too low'])
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "PASSIVE_COOLING"},
-                                       temperature_in_celsius=50)
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too high'])
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "PASSIVE_COOLING"}, 50)
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too high'])
 
         # ========================= MED_ACTIVE_COOLING======================================
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "MED_ACTIVE_COOLING"},
-                                       temperature_in_celsius=25)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "MED_ACTIVE_COOLING"}, 25)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, NORMAL")
 
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "MED_ACTIVE_COOLING"},
-                                       temperature_in_celsius=-5)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "MED_ACTIVE_COOLING"}, -5)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, TOO_LOW")
 
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "MED_ACTIVE_COOLING"},
-                                       temperature_in_celsius=50)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "MED_ACTIVE_COOLING"}, 50)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, TOO_HIGH")
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "MED_ACTIVE_COOLING"},
-                                       temperature_in_celsius=25)
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "MED_ACTIVE_COOLING"}, 25)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "NORMAL")
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "MED_ACTIVE_COOLING"},
-                                       temperature_in_celsius=-5)
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too low'])
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "MED_ACTIVE_COOLING"}, -5)
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too low'])
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "MED_ACTIVE_COOLING"},
-                                       temperature_in_celsius=50)
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too high'])
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "MED_ACTIVE_COOLING"}, 50)
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too high'])
 
         # ========================= HI_ACTIVE_COOLING======================================
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "HI_ACTIVE_COOLING"},
-                                       temperature_in_celsius=25)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "HI_ACTIVE_COOLING"}, 25)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, NORMAL")
 
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "HI_ACTIVE_COOLING"},
-                                       temperature_in_celsius=-5)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "HI_ACTIVE_COOLING"}, -5)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, TOO_LOW")
 
-        typewise_alert.check_and_alert(alert_target='TO_CONTROLLER',
-                                       battery_char={"cooling_type": "HI_ACTIVE_COOLING"},
-                                       temperature_in_celsius=50)
+        typewise_alert.check_and_alert('TO_CONTROLLER', {"cooling_type": "HI_ACTIVE_COOLING"}, 50)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "65261, TOO_HIGH")
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "HI_ACTIVE_COOLING"},
-                                       temperature_in_celsius=25)
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "HI_ACTIVE_COOLING"}, 25)
         self.assertEqual(mock_stdout.getvalue().split("\n")[-2], "NORMAL")
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "HI_ACTIVE_COOLING"},
-                                       temperature_in_celsius=-5)
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too low'])
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "HI_ACTIVE_COOLING"}, -5)
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too low'])
 
-        typewise_alert.check_and_alert(alert_target='TO_EMAIL',
-                                       battery_char={"cooling_type": "HI_ACTIVE_COOLING"},
-                                       temperature_in_celsius=50)
-        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1],
-                         ['To: a.b@c.com', 'Hi, the temperature is too high'])
+        typewise_alert.check_and_alert('TO_EMAIL', {"cooling_type": "HI_ACTIVE_COOLING"}, 50)
+        self.assertEqual(mock_stdout.getvalue().split("\n")[-3:-1], ['To: a.b@c.com', 'Hi, the temperature is too high'])
 
 
 if __name__ == '__main__':
